@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-# bash completion for Play Version Manager (PVM)
+# bash completion for SBT Version Manager (SVM)
 
-__pvm_generate_completion()
+__svm_generate_completion()
 {
   declare current_word
   current_word="${COMP_WORDS[COMP_CWORD]}"
@@ -10,7 +10,7 @@ __pvm_generate_completion()
   return 0
 }
 
-__pvm_commands ()
+__svm_commands ()
 {
   declare current_word
   declare command
@@ -26,57 +26,57 @@ __pvm_commands ()
 
       command="${COMP_WORDS[COMP_CWORD-2]}"
       case "${command}" in
-      alias)  __pvm_installed_nodes ;;
+      alias)  __svm_installed_nodes ;;
       esac
 
     else
 
       case "${current_word}" in
-      -*)     __pvm_options ;;
-      *)      __pvm_generate_completion "$COMMANDS" ;;
+      -*)     __svm_options ;;
+      *)      __svm_generate_completion "$COMMANDS" ;;
       esac
 
     fi
 }
 
-__pvm_options ()
+__svm_options ()
 {
   OPTIONS=''
-  __pvm_generate_completion "$OPTIONS"
+  __svm_generate_completion "$OPTIONS"
 }
 
-__pvm_installed_nodes ()
+__svm_installed_nodes ()
 {
-  __pvm_generate_completion "$(pvm_ls) $(__pvm_aliases)"
+  __svm_generate_completion "$(svm_ls) $(__svm_aliases)"
 }
 
-__pvm_aliases ()
+__svm_aliases ()
 {
   declare aliases
   aliases=""
-  if [ -d $PVM_DIR/alias ]; then
-    aliases="`cd $PVM_DIR/alias && ls`"
+  if [ -d $SVM_DIR/alias ]; then
+    aliases="`cd $SVM_DIR/alias && ls`"
   fi
   echo "${aliases}"
 }
 
-__pvm_alias ()
+__svm_alias ()
 {
-  __pvm_generate_completion "$(__pvm_aliases)"
+  __svm_generate_completion "$(__svm_aliases)"
 }
 
-__pvm ()
+__svm ()
 {
   declare previous_word
   previous_word="${COMP_WORDS[COMP_CWORD-1]}"
 
   case "$previous_word" in
-  use|run|ls|list|uninstall) __pvm_installed_nodes ;;
-  alias|unalias)  __pvm_alias ;;
-  *)              __pvm_commands ;;
+  use|run|ls|list|uninstall) __svm_installed_nodes ;;
+  alias|unalias)  __svm_alias ;;
+  *)              __svm_commands ;;
   esac
 
   return 0
 }
 
-complete -o default -o nospace -F __pvm pvm
+complete -o default -o nospace -F __svm svm
