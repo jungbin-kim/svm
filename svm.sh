@@ -297,10 +297,10 @@ svm()
 	    if [[ $PATH == *${SVM_INSTALL_DIR}/* ]]; then
 		PATH=${PATH%${SVM_INSTALL_DIR}/*}${PATH#*${PVM_DIR}/*:} 
 	    fi
-	    export PATH="${SVM_INSTALL_DIR}/${VERSION}:$PATH"
+	    export PATH="${SVM_INSTALL_DIR}/${VERSION}/bin:$PATH"
 	    hash -r
-	    export SVM_PATH="${PVM_INSTALL_DIR}/${VERSION}"
-	    export SVM_BIN="${PVM_INSTALL_DIR}/${VERSION}"
+	    export SVM_PATH="${PVM_INSTALL_DIR}/${VERSION}/bin"
+	    export SVM_BIN="${PVM_INSTALL_DIR}/${VERSION}/bin"
 	    export SVM_CURRENT_VERSION=${VERSION}
 
 	    echo "Now using SBT ${VERSION}"
