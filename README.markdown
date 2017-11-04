@@ -31,6 +31,9 @@ To download, compile, and install the 0.13.0 release of SBT, do this:
 
     svm install 0.13.0
 
+Find available versions in [link](http://dl.bintray.com/sbt/native-packages/sbt/):
+
+	0.12.4, 0.13.0, 0.13.1, 0.13.11.2, 0.13.11, 0.13.12.1, 0.13.12, 0.13.13-RC1, 0.13.13-RC2, 0.13.13-RC3, 0.13.13.1, 0.13.13, 0.13.14-RC1, 0.13.14-RC2, 0.13.14, 0.13.15-RC2, 0.13.15, 0.13.2, 0.13.5-RC1, 0.13.5, 0.13.6, 0.13.7, 0.13.8, 0.13.9, 1.0.0-M1, 1.0.0-M4
 
 And then in any new shell just use the installed version:
 
