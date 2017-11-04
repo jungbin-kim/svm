@@ -35,7 +35,7 @@ download_file_if_needed()
     echo -en "Checking download url ${url} ..."
     
     # What's currently on the server?
-    http_code=$(curl -w '%{http_code}' -sIL "${url}" -o ${tempfile})
+    http_code=$(curl -L -w '%{http_code}' -sIL "${url}" -o ${tempfile})
     if (( $? != 0 || ${http_code} != 200 )); then 
         echo -e "\tdownload failed with status ${http_code}"
         rm -f ${tempfile}
@@ -79,8 +79,8 @@ download_file_if_needed()
                 rm -f ${file}
             fi
                 
-            curl -C - --progress-bar ${url} -o "${file}" || \
-                (echo -e "\nRestart download" && rm -f "${file}" && curl --progress-bar ${url} -o "${file}" ) || \
+            curl -L -C - --progress-bar ${url} -o "${file}" || \
+                (echo -e "\nRestart download" && rm -f "${file}" && curl -L --progress-bar ${url} -o "${file}" ) || \
                 mv ${tempfile} ${file_http_head} && return 0 # Success
 
             return 255 # fail
@@ -89,8 +89,8 @@ download_file_if_needed()
     fi
 
     # No file. Just download
-    curl -C - --progress-bar ${url} -o "${file}" || \
-        (echo -e "\Restart download" &&  $rm -f "${file}" && curl --progress-bar ${url} -o "${file}" ) || \
+    curl -L -C - --progress-bar ${url} -o "${file}" || \
+        (echo -e "\Restart download" &&  $rm -f "${file}" && curl -L --progress-bar ${url} -o "${file}" ) || \
         mv ${tempfile} ${file_http_head} && return 0 # Success
     
     return 255 # fail
@@ -209,7 +209,7 @@ svm()
 
 	    [ -d "${SVM_DIR}/${VERSION}" ] && echo "${VERSION} is already installed." && return
 
-	    appname=sbt
+	    appname="sbt-${VERSION}"
 	    zipfile="${appname}.zip"
             zipfile_location=${SVM_DIR}/${SRC_DIR_NAME}/${zipfile}
             
@@ -218,7 +218,7 @@ svm()
             
             return_code=255
             cd "${SVM_DIR}" 
-            for download_url in "http://repo.scala-sbt.org/scalasbt/sbt-native-packages/org/scala-sbt/sbt/${VERSION}/${zipfile}"; do 
+            for download_url in "http://dl.bintray.com/sbt/native-packages/sbt/${VERSION}/${zipfile}"; do 
                 $DEBUG && echo "download_file_if_needed '$download_url' '$zipfile_location'"
                 download_file_if_needed $download_url $zipfile_location
                 if (( $? == 0)); then 
@@ -233,7 +233,7 @@ svm()
 	    fi
 
 	    if (cd $(TEMPDIR=/tmp && mktemp -d -t svm.XXXXXX) && \
-                unzip -u -qq "${zipfile_location}" && \
+                unzip -u -qq "${zipfile_location}" && mv sbt ${appname} && \
                 rm -rf ${SVM_INSTALL_DIR}/${VERSION} && \
 	        mv -f ${appname} ${SVM_INSTALL_DIR}/${VERSION})
 	    then
